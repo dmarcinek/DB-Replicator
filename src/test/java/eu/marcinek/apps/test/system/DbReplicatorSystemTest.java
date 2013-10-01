@@ -46,11 +46,14 @@ public class DbReplicatorSystemTest {
 		dbReplicator.replicate();
 
 		// then
-		List<Map<String, Object>> copiedRows = destinationJdbcTemplate.queryForList("SELECT FIRST_NAME FROM PERSON");
+		List<Map<String, Object>> copiedRows = destinationJdbcTemplate.queryForList("SELECT FIRST_NAME, ZIP_CODE FROM PERSON");
 		assertThat(copiedRows.size(), is(valuesToInsert.size()));
 		assertThat(valueIn(copiedRows, FIRST_ROW, "FIRST_NAME"), is("Jan"));
 		assertThat(valueIn(copiedRows, SECOND_ROW, "FIRST_NAME"), is("Anna"));
 		assertThat(valueIn(copiedRows, THIRD_ROW, "FIRST_NAME"), is("Roman"));
+		assertThat(valueIn(copiedRows, FIRST_ROW, "ZIP_CODE"), is("35-600"));
+		assertThat(valueIn(copiedRows, SECOND_ROW, "ZIP_CODE"), is("00-800"));
+		assertThat(valueIn(copiedRows, THIRD_ROW, "ZIP_CODE"), is("33-399"));
 	}
 
 	private String valueIn(List<Map<String, Object>> copiedRows, int rowNo, String columnName) {
